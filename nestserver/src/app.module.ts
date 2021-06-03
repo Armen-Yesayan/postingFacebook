@@ -2,6 +2,7 @@ import {Module} from "@nestjs/common";
 import {SequelizeModule} from "@nestjs/sequelize";
 import { AuthModule } from './auth/auth.module';
 import {User} from "./auth/auth.model";
+import { FacebookModule } from './facebook/facebook.module';
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import {User} from "./auth/auth.model";
             autoLoadModels: true,
         }),
         AuthModule,
+        FacebookModule,
     ]
 })
 export class AppModule{}

@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
+import CreatePost from "./components/CreatePost";
 
 const App = () => {
 
@@ -28,6 +29,7 @@ const App = () => {
                         <Login setToken={setToken}/>
                     </Route>
                     <Route exact path='/profile' component={Profile}/>
+                    <Route exact path='/create-post' component={CreatePost}/>
                 </div>
             </div>
         </Router>

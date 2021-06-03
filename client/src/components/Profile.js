@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import jwt_decode from 'jwt-decode';
-import {useHistory} from 'react-router-dom'
+import {NavLink, useHistory} from 'react-router-dom'
 
 const Profile = () => {
     const history = useHistory();
@@ -47,6 +47,9 @@ const Profile = () => {
                     </tr>
                     </tbody>
                 </table>
+                <div className='col-lg-6 mx-auto mt-4'>
+                    <NavLink className='btn btn-primary' to='/create-post'>Crate Post</NavLink>
+                </div>
             </div>
         </div>
     );

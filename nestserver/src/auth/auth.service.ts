@@ -52,15 +52,19 @@ export class AuthService {
 
     async facebookLogin(req) {
         const user = req.body.user
+        console.log(user)
         const candidate = await this.getUserByEmail(user.email);
 
         if(candidate) {
             const token = await this.generateToken(candidate)
-            return token
+            return {
+                token,
+                access_token: user.accessToken
+            }
         } else {
             const passwordHash = await bcrypt.hash(user.email + 'secret', 5);
-            const firstName = user.name.split(' ')[0]
-            const lastName = user.name.split(' ')[1]
+            const firstName = user.first_name;
+            const lastName = user.last_name
 
             const us = {
                 firstName,
@@ -68,7 +72,11 @@ export class AuthService {
                 email: user.email
             }
             const people = await this.userModel.create({...us, password: passwordHash});
-            return await this.generateToken(people)
+            const token = await this.generateToken(people)
+            return {
+                token,
+                access_token: user.accessToken
+            }
         }
     }
 
