@@ -47,7 +47,7 @@ const Login = ({setToken}) => {
         console.log(response)
     }
     const responseFacebook = (response) => {
-        console.log(response)
+        localStorage.setItem('user_id', response.id)
         LoginFacebook(response).then(res => {
             if (res) {
                 setToken(true)
@@ -143,7 +143,6 @@ const Login = ({setToken}) => {
                         <div className='mt-4'>
                             <FacebookLogin
                                 appId="540039300497467"
-                                autoLoad={true}
                                 fields="first_name,last_name,email,picture"
                                 callback={responseFacebook}
                             />

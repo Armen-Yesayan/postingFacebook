@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import jwt_decode from 'jwt-decode';
 import {NavLink, useHistory} from 'react-router-dom'
+import {getAllGroups} from "./Function";
 
-const Profile = () => {
+const Profile = ({setGroups}) => {
     const history = useHistory();
     const [values, setValues] = useState({
         first_name: '',
@@ -10,8 +11,13 @@ const Profile = () => {
         email: ''
     })
 
+    useEffect(async () => {
+        let gs = await getAllGroups();
+        setGroups(gs)
+    }, [])
+
     useEffect(() => {
-        if(localStorage.jwt_token) {
+        if (localStorage.jwt_token) {
             const token = localStorage.jwt_token;
             const decode = jwt_decode(token);
 
@@ -48,7 +54,7 @@ const Profile = () => {
                     </tbody>
                 </table>
                 <div className='col-lg-6 mx-auto mt-4'>
-                    <NavLink className='btn btn-primary' to='/create-post'>Crate Post</NavLink>
+                    <NavLink className='btn btn-primary' to='/create-post'>Create Post</NavLink>
                 </div>
             </div>
         </div>

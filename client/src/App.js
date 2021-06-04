@@ -6,10 +6,12 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import CreatePost from "./components/CreatePost";
+import SelectGroup from "./components/SelectGroup";
 
 const App = () => {
 
     const [token, setToken] = useState(false);
+    const [groups, setGroups] = useState('')
 
     useEffect(() => {
         if(localStorage.jwt_token) {
@@ -28,8 +30,12 @@ const App = () => {
                     <Route exact path='/login'>
                         <Login setToken={setToken}/>
                     </Route>
-                    <Route exact path='/profile' component={Profile}/>
-                    <Route exact path='/create-post' component={CreatePost}/>
+                    <Route exact path='/profile'>
+                        <Profile setGroups={setGroups}/>
+                    </Route>
+                    <Route exact path='/create-post'>
+                        <SelectGroup groups={groups} setGroups={setGroups} />
+                    </Route>
                 </div>
             </div>
         </Router>

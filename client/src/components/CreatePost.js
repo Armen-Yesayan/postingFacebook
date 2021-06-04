@@ -1,17 +1,28 @@
 import React, {useEffect, useState} from 'react';
-import {createPost} from "./Function";
+import {createGroupPost, createPost} from "./Function";
 
-const CreatePost = () => {
+const CreatePost = ({id, handleClose}) => {
     const [value, setValue] = useState('')
     const [status, setStatus] = useState('')
     const [alert, setAlert] = useState(false)
-    const [img, setImg] = useState()
+    const [img, setImg] = useState({
+        preview: '',
+        file: ''
+    })
 
     useEffect(() => {
-        setTimeout(() => {
-            setStatus('')
-            setAlert(false)
-        }, 4000)
+        if(status !== '') {
+            setTimeout(() => {
+                setStatus('')
+                setAlert(false)
+                handleClose();
+                setValue('')
+                setImg({
+                    preview: '',
+                    file: ''
+                });
+            }, 2000)
+        }
     }, [status])
 
     const change = (e) => {
@@ -19,38 +30,36 @@ const CreatePost = () => {
     }
 
     const imgUpload = e => {
+        const file = e.target.files[0];
         const image = URL.createObjectURL(e.target.files[0]);
 
-        setImg(image);
+        setImg({
+            preview: image,
+            file
+        });
     }
 
     const submit = async () => {
-        const st = await createPost(value);
+        const st = await createGroupPost(id, value, img.file);
 
         if(st) {
-            setValue('')
             setAlert(true)
             setStatus(st)
         }
     }
 
-    console.log(img)
-
     return (
         <div className='container'>
-            <div className='col-lg-6 mx-auto text-center mt-3'>
-                <h1>Create Post</h1>
-            </div>
             {
-                alert && <div className='col-lg-6 mx-auto mt-3'>
+                alert && <div className='mt-3'>
                     <div className="alert alert-success" role="alert">
                         {status}
                     </div>
                 </div>
             }
-            <div className='col-lg-6 mx-auto mt-3'>
-                <input type="file" onChange={imgUpload}/>
-                <img src={img} alt=""/>
+            <div className='mt-3'>
+                <input type="file" onChange={imgUpload} />
+                <img src={img.preview} alt="" width='100%' className='mt-2 mb-2'/>
                 <textarea className='form-control' value={value} onChange={change}/>
                 <div className='mt-2 d-flex justify-content-end'>
                     <button className='btn btn-success' onClick={submit}>Create</button>
