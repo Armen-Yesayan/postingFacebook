@@ -21,12 +21,17 @@ const SelectGroup = ({groups, setGroups}) => {
         setShow(true);
     }
 
+    const connect = async () => {
+        let gs = await getAllGroups();
+        setGroups(gs)
+    }
+
     return (
         <div className='container'>
             <div className='col-lg-6 mx-auto text-center mt-3'>
                 <h1>Select Group</h1>
             </div>
-            <div className='mt-3'>
+            <div className='mt-3 d-flex justify-content-between'>
                 <div className='d-flex'>
                     {groups && groups.map(item => (
                         <div className="card mr-2" key={item.id} style={{width: '18rem'}}>
@@ -38,6 +43,9 @@ const SelectGroup = ({groups, setGroups}) => {
                             </div>
                         </div>
                     ))}
+                </div>
+                <div>
+                    <button className='btn btn-success' onClick={connect}>Connection</button>
                 </div>
             </div>
 

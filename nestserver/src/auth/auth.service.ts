@@ -1,6 +1,6 @@
 import {HttpException, HttpStatus, Injectable, UnauthorizedException} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
-import {User} from "./auth.model";
+import {User} from "./model/auth.model";
 import {RegisterDto} from "./dto/register.dto";
 import * as bcrypt from 'bcryptjs'
 import {LoginDto} from "./dto/login.dto";
@@ -10,7 +10,8 @@ import {JwtService} from "@nestjs/jwt";
 export class AuthService {
 
     constructor(@InjectModel(User) private userModel: typeof User,
-                private jwtService: JwtService) {}
+                private jwtService: JwtService) {
+    }
 
     async register(dto: RegisterDto): Promise<User> {
         const canditate = await this.getUserByEmail(dto.email);
@@ -24,7 +25,7 @@ export class AuthService {
 
     async login(dto: LoginDto) {
         const user = await this.validateUser(dto);
-
+        
         return this.generateToken(user);
     }
 
@@ -33,7 +34,7 @@ export class AuthService {
 
         const candidate = await this.getUserByEmail(user['email']);
 
-        if(candidate) {
+        if (candidate) {
             const token = await this.generateToken(candidate)
 
             return token
@@ -55,7 +56,7 @@ export class AuthService {
         console.log(user)
         const candidate = await this.getUserByEmail(user.email);
 
-        if(candidate) {
+        if (candidate) {
             const token = await this.generateToken(candidate)
             return {
                 token,
