@@ -29,6 +29,7 @@ export const LoginFacebook = (user) => {
         user
     }).then(response => {
         localStorage.setItem('jwt_token', response.data.token.token)
+        localStorage.setItem('refresh_token', response.data.token.refresh_token)
         localStorage.setItem('access_token', response.data.access_token)
         return response.data
     }).catch(err => {
