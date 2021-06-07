@@ -25,7 +25,7 @@ export class AuthService {
 
     async login(dto: LoginDto) {
         const user = await this.validateUser(dto);
-        
+
         return this.generateToken(user);
     }
 
@@ -52,8 +52,8 @@ export class AuthService {
     }
 
     async facebookLogin(req) {
-        const user = req.body.user
-        console.log(user)
+        const user = req.body.user;
+
         const candidate = await this.getUserByEmail(user.email);
 
         if (candidate) {
@@ -81,11 +81,25 @@ export class AuthService {
         }
     }
 
+    async refreshToken(req) {
+        const {refreshToken} = req.body;
+        if (!refreshToken)
+            throw new UnauthorizedException('Refresh token is not set');
+
+        const user = this.verifyRefreshToken(refreshToken);
+
+        return this.generateToken(user);
+
+    }
+
     private async generateToken(user: User) {
         const payload = {email: user.email, id: user.id, firstName: user.firstName, lastName: user.lastName};
 
         return {
-            token: this.jwtService.sign(payload)
+            token: this.jwtService.sign(payload),
+            refresh_token: this.jwtService.sign(payload, {
+                expiresIn: '1y'
+            })
         }
     }
 
@@ -110,5 +124,10 @@ export class AuthService {
         const decode = await this.jwtService.decode(token);
 
         return decode;
+    }
+
+    private verifyRefreshToken(refreshToken: any) {
+        const user = this.jwtService.verify(refreshToken);
+        return user;
     }
 }

@@ -12,6 +12,7 @@ const Navbar = ({token, setToken}) => {
         localStorage.removeItem('jwt_token');
         localStorage.removeItem('user_id');
         localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
         history.push('/')
     }
 

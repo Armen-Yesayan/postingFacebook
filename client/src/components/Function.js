@@ -5,8 +5,8 @@ export const login = (user) => {
         email: user.email,
         password: user.password
     }).then(response => {
-        console.log(response.data)
         localStorage.setItem('jwt_token', response.data.token)
+        localStorage.setItem('refresh_token', response.data.refresh_token)
         return response.data
     }).catch(err => {
         console.log(err)
@@ -102,4 +102,18 @@ export const createGroupPost = async (id, message, img) => {
     if(res.data.id) {
         return 'Created successfully!'
     }
+}
+
+export const RefreshToken = () => {
+    const token = localStorage.getItem('refresh_token');
+
+    return axios.post('http://localhost:5000/users/refresh-token', {
+        refreshToken: token
+    }).then(response => {
+        localStorage.setItem('jwt_token', response.data.token)
+        localStorage.setItem('refresh_token', response.data.refresh_token)
+        return response.data
+    }).catch(err => {
+        console.log(err)
+    })
 }
